@@ -7,8 +7,11 @@ and each of the four sub-grids of size 2x2 contain each of the letters only once
 As an example, this is a successfully solved grid:
 
 W 	D 	R 	O
+
 O 	R 	W 	D
+
 R 	O 	D 	W
+
 D 	W 	O 	R
 
 At the start of the game, a partially completed grid is provided by the user. Depending on
