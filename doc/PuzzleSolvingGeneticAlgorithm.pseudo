@@ -1,0 +1,45 @@
+// 1. Settings Initialisation
+set POPULATION_CAPACITY = <Non-negative integer>
+set ELITISM_QUOTIENT = <Percentage expressed as a decimal value>
+set MUTATION_PROBABILITY = <Percentage expressed as a decimal value>
+set DIVERSITY_QUOTIENT = <Percentage expressed as a decimal value>
+set CROSSOVER_PROBABILITY = <Percentage expressed as a decimal value>
+set TOURNAMENT_SIZE = <Non-negative integer>
+set MAX_ITERATION = <Non-negative integer>
+// 2. Input Normalization/Labeling
+mapLetterTo("", 0)
+set iterator = 1
+foreach (letter in getDistinctLetters(input)) do
+    mapLetterTo(letter, iterator)
+    iterator++
+end
+// 3. Definition of Fitness Function
+set penalties = calcRowPenalties() + calcColumnPenalties() + calcSubGridPenalties()
+// 4. Definition of Termination Criteria
+set terminationCriteria = penalties == 0 or currentIteration >= MAX_ITERATION
+// 5. Generation of Initial Random Population
+set population = []
+for (set i = 1; i <= POPULATION_CAPACITY_SET; i++) do
+    set chromosome = createRandomChromosome();
+    population.Add(chromosome);
+end
+// 6. Solution Search Routine
+if (getBestChromosome(population).Fitness == 0) do
+    return
+end
+set currentGeneration = population
+set nextGeneration = []
+while (not terminationCriteria) do
+    applyEliteOperator(currentGeneration, nextGeneration)
+    applyDiversityOperator(nextGeneration)
+    while (nextGeneration.Size < currentGeneration.Size) do 
+        [parent1, parent2] = doTournament(currentGeneration)
+        [child1, child2] = applyCrossoverOperator(paret1, parent2)
+        applyMutationOperator(child1)
+        applyMutationOperator(child2)
+        nextGeneration.Add(child1)
+        nextGeneration.Add(child2)
+    end
+    currentGeneration = nextGeneration
+    nextGeneration = [] 
+end
