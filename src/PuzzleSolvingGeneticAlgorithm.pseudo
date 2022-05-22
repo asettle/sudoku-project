@@ -48,3 +48,4 @@ while (not terminationCriteria) do
     currentGeneration = nextGeneration
     nextGeneration = []
 end
+
