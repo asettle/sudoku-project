@@ -1,0 +1,136 @@
+/*
+    Genetic Algorithm Software System Pseudocode
+
+    Alexandra Settle (Project Manager)
+    Iaroslav ‌Medvedyk (Developer)
+    Hammed Arowosegbe (Developer)
+    Mohammad Salamah (QA) 
+
+    CSK 502 Intelligent Systems
+
+    Output Final Solution on a GUI and Provides Sequence Steps in the Console
+*/
+
+
+/*
+    Settings Initialisation (Input Parameters)
+
+    PopulationCapacity is a Non Zero Integer with a Maximum Value of 999
+    ElitismQuotient is a number from 0 - 100 in percentage
+    MutationProbability is a number from 0 - 100 in percentage
+    DiversityQuotient is a number from 0 - 100 in percentage
+    CrossoverProbability is a number from 0 - 100 in percentage
+    TournamentSize = is a Non Zero Integer with a Maximum Value of 100
+    MaxInteration is a Non Zero Integer with a Maximum Value of 9999
+
+*/
+
+SET populationCapacity = INPUT ("Population Capacity")
+SET elitismQuotient = INPUT ("Elitism Quotient (%)")
+SET mutationProbability = INPUT ("Mutation Probability (%)")
+SET diversityQuotient = INPUT ("Diversity Quotient (%)")
+SET crossoverProbability = INPUT ("Crossover Probability (%)")
+SET tournamentSize = INPUT ("Tournament Size")
+SET maxInteration = INPUT ("Maximum Interations")
+
+SET inputCharacters = INPUT ( "4 x 4 Matrix Box Character Input" )
+
+
+/*
+    Input Normalisation or Labeling
+
+    Here we get matrix input parameters from the input character variable, get the distinct characters and map it to an integer
+*/
+
+
+//Get Distinct Chracters from and Array of Input Variables
+
+FUNCTION getDistinctCharacters (characters)
+    SET distinctCharacters = []
+    FOR each column in characters
+        IF distinctCharacters does not contain column THEN
+            ADD column to distinctCharacters
+        ENDIF 
+    ENDFOR
+    RETURN distinctCharacters
+ENDFUNCTION
+
+
+//Map unique input characters to a number for easy manipulation and computation
+
+SET inputMapping = [][]
+
+FUNCTION mapLetterToInteger (character, number)
+    inputMapping MAP character to number
+ENDFUNCTION
+
+
+//Run mapping function and Dinstict character function
+
+SET iterator = 1
+
+FOR each letter in getDistinctCharacters(inputCharacters)
+    mapLetterToInteger(letter, iterator)
+    INCREMENT iterator
+ENDFOR
+
+// 3. Definition of Fitness Function
+SET penalties = calcRowPenalties() + calcColumnPenalties() + calcSubGridPenalties()
+
+
+// 4. Definition of Termination Criteria
+
+FUNCTION calculateTerminationCriteria ()
+    IF penalties is equal to 0 THEN 
+        RETURN true
+    ELSE IF currentIteration is greater than or equals maxInteration THEN
+        RETURN true
+    ELSE 
+        RETURN false
+    ENDIF
+ENDFUNCTION
+
+SET terminationCriteria = calculateTerminationCriteria()
+
+
+// 5. Generation of Initial Random Population
+SET population = []
+
+FOR i = 1 to populationCapacity
+    SET chromosome = createRandomChromosome()
+    ADD chromosome to population
+ENDFOR
+
+
+// 6. Solution Search Routine
+
+IF fitness in getBestChromosome(population) is equals to 0 THEN
+    RETURN
+ENDIF
+
+SET currentGeneration = population
+SET nextGeneration = []
+SET currentIteration = 0
+WHILE terminationCriteria is equals to false
+    applyEliteOperator(currentGeneration, nextGeneration)
+    applyDiversityOperator(nextGeneration)
+    WHILE size in nextGeneration < size in currentGeneration
+        SET [parent1, parent2] = doTournament(currentGeneration)
+        SET [child1, child2] = applyCrossoverOperator(parent1, parent2)
+        applyMutationOperator(child1)
+        applyMutationOperator(child2)
+        nextGeneration.Add(child1)
+        nextGeneration.Add(child2)
+    ENDWHILE
+    currentGeneration = nextGeneration
+    nextGeneration = []
+    INCREMENT currentIteration
+ENDWHILE
+
+
+
+/*
+
+    Convert Integers to Letters
+*/
+
