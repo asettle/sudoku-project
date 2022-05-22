@@ -8,7 +8,20 @@ For more information on the task at hand, see `assignment-task.md`.
 
 ## How do I get started?
 
-Before you begin... 
+The implementation of this project was done using Windows Forms is
+which is Windows-native. This means that this project is not compatible
+with Unix-based systems, such as Linux or Mac.
+
+To understand the program and how it runs, see the `/.pseudocode/` file
+in the `/doc/` folder for the pseudo code implementation.
+
+To run the program on your Windows machine, select `PuzzleSolver.zip`
+from the `/bin/` folder and unzip.
+
+Once you've downloaded the program, run the `.exe` file.
+
+The program will run as a small console-based application. Click
+the `Solve` button to solve the problem.
 
 
 ## Contributing
