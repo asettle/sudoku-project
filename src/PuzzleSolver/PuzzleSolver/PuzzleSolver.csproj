@@ -52,6 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationLogic\Domains\Chromosome.cs" />
+    <Compile Include="ApplicationLogic\Domains\Gene.cs" />
+    <Compile Include="ApplicationLogic\Domains\Population.cs" />
     <Compile Include="ApplicationLogic\GeneticAlgorithm.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
@@ -62,6 +65,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\MappingHelper.cs" />
+    <Compile Include="Utilities\SettingsHelper.cs" />
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -90,5 +94,6 @@
   <ItemGroup>
     <Content Include="jigsaw-308909_1280.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
