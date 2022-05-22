@@ -1,4 +1,4 @@
-﻿using System;
+﻿using PuzzleSolver.Utilities;
 using System.Collections.Generic;
 
 namespace PuzzleSolver.ApplicationLogic
@@ -27,7 +27,9 @@ namespace PuzzleSolver.ApplicationLogic
 
         public List<char> Solve(List<char> puzzleTask)
         {
-            throw new NotImplementedException();
+            var solution = new List<int>();
+            var mapping = MappingHelper.MapToNumbers(puzzleTask, out List<int> puzzleTaskInt);
+            return MappingHelper.MapToCharacters(solution, mapping);
         }
     }
 }
