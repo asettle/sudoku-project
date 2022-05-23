@@ -10,7 +10,8 @@ For more information on the task at hand, see `assignment-task.md`.
 
 The implementation of this project was done using Windows Forms is
 which is Windows-native. This means that this project is not compatible
-with Unix-based systems, such as Linux or Mac.
+with Unix-based systems, such as Linux or Mac. The implementation of the 
+algorithmic engine was inspired by the SudokuGA project (https://github.com/erwin-beckers/SudokuGA).
 
 To understand the program and how it runs, see the `/.pseudocode/` file
 in the `/doc/` folder for the pseudo code implementation.
