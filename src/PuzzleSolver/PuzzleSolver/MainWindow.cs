@@ -122,6 +122,7 @@ namespace PuzzleSolver
                 _populationCapacity = Convert.ToInt32(populationCapacityEntryField.Value);
                 _maxIterations = Convert.ToInt32(maximalIterationsEntryField.Value);
                 _elitismQuotient = elitismQuotientEntryField.Value / 100;
+                _tournamentSize = Convert.ToInt32(tournamentSizeEntryField.Value);
                 Console.Clear();
                 backgroundWorker.RunWorkerAsync();
             }
@@ -129,7 +130,7 @@ namespace PuzzleSolver
 
         private void BackgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            var geneticAlgorithm = new GeneticAlgorithm(_populationCapacity, _elitismQuotient, 0, 0, 0, 0, _maxIterations);
+            var geneticAlgorithm = new GeneticAlgorithm(_populationCapacity, _elitismQuotient, 0, 0, 0, _tournamentSize, _maxIterations);
             _solution = geneticAlgorithm.Solve(PuzzleEntryFieldValues);
         }
 
