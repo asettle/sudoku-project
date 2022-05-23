@@ -11,7 +11,7 @@ namespace PuzzleSolver
     public partial class MainWindow : Form
     {
         internal int _populationCapacity;
-        internal double _elitismQuotient;
+        internal decimal _elitismQuotient;
         internal double _mutationProbability;
         internal double _diversityQuotient;
         internal double _crossoverProbability;
@@ -120,6 +120,8 @@ namespace PuzzleSolver
                 solvePuzzleButton.Enabled = false;
                 ShowSolution(null);
                 _populationCapacity = Convert.ToInt32(populationCapacityEntryField.Value);
+                _maxIterations = Convert.ToInt32(maximalIterationsEntryField.Value);
+                _elitismQuotient = elitismQuotientEntryField.Value / 100;
                 Console.Clear();
                 backgroundWorker.RunWorkerAsync();
             }
@@ -127,7 +129,7 @@ namespace PuzzleSolver
 
         private void BackgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            var geneticAlgorithm = new GeneticAlgorithm(_populationCapacity, 0, 0, 0, 0, 0, 0);
+            var geneticAlgorithm = new GeneticAlgorithm(_populationCapacity, _elitismQuotient, 0, 0, 0, 0, _maxIterations);
             _solution = geneticAlgorithm.Solve(PuzzleEntryFieldValues);
         }
 

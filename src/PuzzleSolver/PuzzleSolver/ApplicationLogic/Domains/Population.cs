@@ -6,17 +6,17 @@ namespace PuzzleSolver.ApplicationLogic.Domains
 {
     internal sealed class Population
     {
-        private readonly List<Chromosome> _chromosomes = new List<Chromosome>();
+        public List<Chromosome> Chromosomes = new List<Chromosome>();
 
         public Population(Chromosome initialChromosome)
         {
-            _chromosomes.Add(initialChromosome);
-            while (_chromosomes.Count < SettingsHelper.PopulationCapacity)
+            Chromosomes.Add(initialChromosome);
+            while (Chromosomes.Count < SettingsHelper.PopulationCapacity)
             {
-                _chromosomes.Add(initialChromosome.Clone().Randomise());
+                Chromosomes.Add(initialChromosome.Clone().Randomise());
             }
         }
 
-        public Chromosome GetFittestChromosome() => _chromosomes.OrderByDescending(r => r.Fitness).FirstOrDefault();
+        public Chromosome GetFittestChromosome() => Chromosomes.OrderByDescending(r => r.Fitness).FirstOrDefault();
     }
 }

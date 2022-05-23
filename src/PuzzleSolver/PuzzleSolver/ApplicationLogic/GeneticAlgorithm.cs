@@ -1,4 +1,5 @@
 ﻿using PuzzleSolver.ApplicationLogic.Domains;
+using PuzzleSolver.Operators;
 using PuzzleSolver.Utilities;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,12 @@ namespace PuzzleSolver.ApplicationLogic
 {
     internal sealed class GeneticAlgorithm
     {
-        public GeneticAlgorithm(int populationCapacity, double elitismQuotient, double mutationProbability, 
+        private readonly ElitismOperator _elitismOperator;
+
+        public GeneticAlgorithm(int populationCapacity, decimal elitismQuotient, double mutationProbability, 
             double diversityQuotient, double crossoverProbability, int tournamentSize, int maxIterations)
         {
+            _elitismOperator = new ElitismOperator();
             SettingsHelper.PopulationCapacity = populationCapacity;
             SettingsHelper.ElitismQuotient = elitismQuotient;
             SettingsHelper.MutationProbability = mutationProbability;
@@ -28,11 +32,17 @@ namespace PuzzleSolver.ApplicationLogic
             var initialChromosome = new Chromosome(initialGenes);
             var population = new Population(initialChromosome);
             var generationSequenceNo = 1;
-            var bestChromosome = population.GetFittestChromosome();
-            if (bestChromosome.Fitness == 0)
+            Chromosome bestChromosome = new Chromosome(Enumerable.Repeat(new Gene(0), 16).ToList());
+            while (bestChromosome.Fitness < 0 && generationSequenceNo < SettingsHelper.MaxIterations)
             {
-                ConsoleHelper.OutputStatus(generationSequenceNo, bestChromosome, mapping);
-                bestChromosome.Genes.Select(r => r.Value).ToList().ForEach(r => solution.Add(r));
+                bestChromosome = population.GetFittestChromosome();
+                if (bestChromosome.Fitness == 0)
+                {
+                    ConsoleHelper.OutputStatus(generationSequenceNo, bestChromosome, mapping);
+                    bestChromosome.Genes.Select(r => r.Value).ToList().ForEach(r => solution.Add(r));
+                }
+                _elitismOperator.Apply(population);
+                generationSequenceNo++;
             }
             return MappingHelper.MapToCharacters(solution, mapping);
         }

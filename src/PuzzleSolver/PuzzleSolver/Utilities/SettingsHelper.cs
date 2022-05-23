@@ -5,7 +5,7 @@ namespace PuzzleSolver.Utilities
     internal static class SettingsHelper
     {
         internal static int PopulationCapacity { get; set; }
-        internal static double ElitismQuotient { get; set; }
+        internal static decimal ElitismQuotient { get; set; }
         internal static double MutationProbability { get; set; }
         internal static double DiversityQuotient { get; set; }
         internal static double CrossoverProbability { get; set; }
