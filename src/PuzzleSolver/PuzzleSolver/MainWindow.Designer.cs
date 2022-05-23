@@ -80,6 +80,7 @@
             this.puzzleSolutionField3 = new System.Windows.Forms.RichTextBox();
             this.puzzleSolutionField2 = new System.Windows.Forms.RichTextBox();
             this.puzzleSolutionField1 = new System.Windows.Forms.RichTextBox();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.puzzleSettingsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maximalIterationsEntryField)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tournamentSizeEntryField)).BeginInit();
@@ -574,6 +575,7 @@
             this.solvePuzzleButton.TabIndex = 35;
             this.solvePuzzleButton.Text = "Solve!";
             this.solvePuzzleButton.UseVisualStyleBackColor = false;
+            this.solvePuzzleButton.Click += new System.EventHandler(this.SolvePuzzleButton_Click);
             // 
             // puzzleSolutionGroupBox
             // 
@@ -810,6 +812,11 @@
             this.puzzleSolutionField1.TabIndex = 17;
             this.puzzleSolutionField1.Text = "";
             // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker_DoWork);
+            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_RunWorkerCompleted);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -895,6 +902,7 @@
         private System.Windows.Forms.RichTextBox puzzleSolutionField2;
         private System.Windows.Forms.RichTextBox puzzleSolutionField1;
         private System.Windows.Forms.Button solvePuzzleButton;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
     }
 }
 

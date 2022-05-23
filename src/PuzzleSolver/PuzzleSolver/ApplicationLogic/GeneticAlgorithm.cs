@@ -26,7 +26,14 @@ namespace PuzzleSolver.ApplicationLogic
             SettingsHelper.IndicesOfNonFixedPositions = puzzleTaskInt.Select((value, index) => (index, value)).Where(r => r.value == 0).Select(r => r.index).ToList();
             var initialGenes = puzzleTaskInt.Select(r => new Gene(r, r != 0)).ToList();
             var initialChromosome = new Chromosome(initialGenes);
-            var population = Population.CreateInstance(initialChromosome);
+            var population = new Population(initialChromosome);
+            var generationSequenceNo = 1;
+            var bestChromosome = population.GetFittestChromosome();
+            if (bestChromosome.Fitness == 0)
+            {
+                ConsoleHelper.OutputStatus(generationSequenceNo, bestChromosome, mapping);
+                bestChromosome.Genes.Select(r => r.Value).ToList().ForEach(r => solution.Add(r));
+            }
             return MappingHelper.MapToCharacters(solution, mapping);
         }
     }

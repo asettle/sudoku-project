@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PuzzleSolver.ApplicationLogic;
+using PuzzleSolver.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -8,20 +10,55 @@ namespace PuzzleSolver
 {
     public partial class MainWindow : Form
     {
-        public List<char> PuzzleEntryFieldValues {get; set;}
+        internal int _populationCapacity;
+        internal double _elitismQuotient;
+        internal double _mutationProbability;
+        internal double _diversityQuotient;
+        internal double _crossoverProbability;
+        internal int _tournamentSize;
+        internal int _maxIterations;
+        internal int _originallySetPositions;
 
+        internal List<char> _solution;
+
+        public List<char> PuzzleEntryFieldValues {get; set;}
+        
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void ShowSolution(List<char> solutions)
+        private void ShowSolution(List<char> solution)
         {
-            if (solutions == null || solutions.Count != 16) return; 
+            var solutionStatus = SolutionStatus.Found;
+
+            if (solution == null)
+            {
+                solutionStatus = SolutionStatus.InProgress;
+            }
+            else if (solution.Count == 0)
+            {
+                solutionStatus = SolutionStatus.NotFound;
+            }
+           
             for (var i = 0; ++i < 17;)
             {
                 var solutionField = Controls["puzzleGroupBox"].Controls["puzzleSolutionGroupBox"].Controls[$"puzzleSolutionField{i}"] as RichTextBox;
-                solutionField.Text = solutions[i - 1].ToString();
+                if (solutionStatus == SolutionStatus.Found)
+                {
+                    solutionField.ForeColor = System.Drawing.Color.LimeGreen;
+                    solutionField.Text = solution[i - 1].ToString();
+                }
+                else if (solutionStatus == SolutionStatus.NotFound)
+                {
+                    solutionField.ForeColor = System.Drawing.Color.Red;
+                    solutionField.Text = "X";
+                }
+                else
+                {
+                    solutionField.ForeColor = System.Drawing.Color.OrangeRed;
+                    solutionField.Text = "?";
+                }
             } 
         }
         
@@ -36,8 +73,6 @@ namespace PuzzleSolver
         {
             PuzzleEntryFieldValues = new List<char>();
             Enumerable.Range(1, 16).ToList().ForEach(r => PuzzleEntryFieldValues.Add('\0'));
-            // ToDo: Temporary initialization
-            ShowSolution(new List<char> { 'E', 'C', 'H', 'O', 'H', 'O', 'E', 'C', 'C', 'H', 'O', 'E', 'O', 'E', 'C', 'H' });
         }
 
         private void PuzzleEntryField_TextChanged(object sender, EventArgs e)
@@ -77,6 +112,30 @@ namespace PuzzleSolver
                 currentEntryField.Value = currentEntryField.Maximum;
             }
         }
-        #endregion    
+
+        private void SolvePuzzleButton_Click(object sender, EventArgs e)
+        {
+            if (!backgroundWorker.IsBusy)
+            {
+                solvePuzzleButton.Enabled = false;
+                ShowSolution(null);
+                _populationCapacity = Convert.ToInt32(populationCapacityEntryField.Value);
+                Console.Clear();
+                backgroundWorker.RunWorkerAsync();
+            }
+        }
+
+        private void BackgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            var geneticAlgorithm = new GeneticAlgorithm(_populationCapacity, 0, 0, 0, 0, 0, 0);
+            _solution = geneticAlgorithm.Solve(PuzzleEntryFieldValues);
+        }
+
+        private void BackgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            solvePuzzleButton.Enabled = true;
+            ShowSolution(_solution);
+        }
+        #endregion
     }
 }

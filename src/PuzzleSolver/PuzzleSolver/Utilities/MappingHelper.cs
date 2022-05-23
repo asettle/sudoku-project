@@ -18,7 +18,7 @@ namespace PuzzleSolver.Utilities
             mappedPuzzleTask = new List<int>();
             foreach (char character in puzzleTask)
             {
-                mappedPuzzleTask.Add(mapping.Keys.Where(r => r == character).First());
+                mappedPuzzleTask.Add(mapping.Where(r => r.Value == character).First().Key);
             }
             return mapping;
         }

@@ -29,9 +29,26 @@ namespace PuzzleSolver.ApplicationLogic.Domains
             return this;
         }
 
-        private List<Gene> GetRowComponent(int rowIndex) => Enumerable.Range(0, 4).ToList().Select(r => Genes[4 * rowIndex + r]).ToList();
+        public List<Gene> GetRowComponent(int rowIndex) => Enumerable.Range(0, 4).ToList().Select(r => Genes[4 * rowIndex + r]).ToList();
 
-        private List<Gene> GetColumnComponent(int columnIndex) => Enumerable.Range(0, 4).ToList().Select(r => Genes[columnIndex + 4 * r]).ToList();
+        public List<Gene> GetColumnComponent(int columnIndex) => Enumerable.Range(0, 4).ToList().Select(r => Genes[columnIndex + 4 * r]).ToList();
+
+        public List<Gene> GetSubGridComponent(int rowIndex, int columnIndex)
+        {
+            if (rowIndex < 2 && columnIndex < 2)
+            {
+                return GetSubGridComponent(0);
+            }
+            else if (rowIndex < 2 && columnIndex > 1)
+            {
+                return GetSubGridComponent(1);
+            }
+            else if (rowIndex > 1 && columnIndex < 2)
+            {
+                return GetSubGridComponent(2);
+            }
+            return GetSubGridComponent(3);
+        }
 
         private List<Gene> GetSubGridComponent(int subGridIndex)
         {
@@ -64,25 +81,28 @@ namespace PuzzleSolver.ApplicationLogic.Domains
         }
 
         #region Evaluation of Puzzle Rule Violations
+        public bool HasError(List<Gene> genes, int index) =>
+            !genes[index].IsOriginallySet && genes.Count(t => t.Value == genes[index].Value) != 1;
+
         private int CalculateRowRelatedErrorPoints() =>
             Enumerable.Range(0, 4).ToList().Select(r =>
             {
                 var row = GetRowComponent(r);
-                return row.Select(s => s.IsOriginallySet || row.Count(t => t == s) == 1 ? 0 : -1).Sum();
+                return (-1) * Enumerable.Range(0, 4).ToList().Select(s => HasError(row, s)).Count(s => s == true);
             }).Sum();
 
         private int CalculateColumnRelatedErrorPoints() =>
             Enumerable.Range(0, 4).ToList().Select(r =>
             {
                 var column = GetColumnComponent(r);
-                return column.Select(s => s.IsOriginallySet || column.Count(t => t == s) == 1 ? 0 : -1).Sum();
+                return (-1) * Enumerable.Range(0, 4).ToList().Select(s => HasError(column, s)).Count(s => s == true);
             }).Sum();
 
         private int CalculateSubGridRelatedErrorPoints() =>
             Enumerable.Range(0, 4).ToList().Select(r =>
             {
                 var subGrid = GetSubGridComponent(r);
-                return subGrid.Select(s => s.IsOriginallySet || subGrid.Count(t => t == s) == 1 ? 0 : -1).Sum();
+                return (-1) * Enumerable.Range(0, 4).ToList().Select(s => HasError(subGrid, s)).Count(s => s == true);
             }).Sum();
         #endregion
     }
