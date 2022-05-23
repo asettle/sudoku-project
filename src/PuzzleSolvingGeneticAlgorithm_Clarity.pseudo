@@ -13,7 +13,7 @@
 
 
 /*
-    Settings Initialisation (Input Parameters)
+    1. Settings Initialisation (Input Parameters)
 
     PopulationCapacity is a Non Zero Integer with a Maximum Value of 999
     ElitismQuotient is a number from 0 - 100 in percentage
@@ -37,7 +37,7 @@ SET inputCharacters = INPUT ( "4 x 4 Matrix Box Character Input" )
 
 
 /*
-    Input Normalisation or Labeling
+    2. Input Normalisation or Labeling
 
     Here we get matrix input parameters from the input character variable, get the distinct characters and map it to an integer
 */
@@ -104,33 +104,58 @@ ENDFOR
 
 // 6. Solution Search Routine
 
-IF fitness in getBestChromosome(population) is equals to 0 THEN
-    RETURN
-ENDIF
+SET solution = []
+SET generationSequenceNumber = 1
+SET globalBestChromosome = []
 
-SET currentGeneration = population
-SET nextGeneration = []
-SET currentIteration = 0
 WHILE terminationCriteria is equals to false
-    applyEliteOperator(currentGeneration, nextGeneration)
-    applyDiversityOperator(nextGeneration)
-    WHILE size in nextGeneration < size in currentGeneration
+    SET currentBestChromosome = getFittestChromosome(population)
+    IF Fitness in globalBestChromosome is less than Fitness in currentBestChromosome THEN
+        SET globalBestChromosome = currentBestChromosome
+    ENDIF
+    /*
+        after this step the population contains only the n fittest chromosomes
+    */
+    applyElitismOperator(population)
+    applyDiversityOperator(population)
+    WHILE Size in population < populationCapacity
         SET [parent1, parent2] = doTournament(currentGeneration)
         SET [child1, child2] = applyCrossoverOperator(parent1, parent2)
         applyMutationOperator(child1)
         applyMutationOperator(child2)
-        nextGeneration.Add(child1)
-        nextGeneration.Add(child2)
+        ADD child to population
+        ADD child2 to population
     ENDWHILE
-    currentGeneration = nextGeneration
-    nextGeneration = []
-    INCREMENT currentIteration
+    INCREMENT globalBestChromosome
 ENDWHILE
 
+IF Fitness in globalBestChromosome is equals 0 THEN
+    SET solution = globalBestChromosome
+ENDIF
 
 
 /*
+    7. Output Mapping
 
-    Convert Integers to Letters
+    Convert Integers to Letters and display it in the GUI
+
+    OUTPUT displays on a 4x4 grid
 */
+
+
+FUNCTION getCharacter (number)
+    IF inputMapping contain number THEN
+        RETURN the key value
+    ENDIF
+ENDFUNCTION
+
+
+FOR i = 0 in solution
+    IF i + 1 /4 is equals to 0 THEN
+        moveCursorToNextGrid()
+        OUTPUT getCharacter(i in solution)
+    ELSE
+        OUTPUT getCharacter(i in solution)
+    ENDIF
+ENDFOR
 
