@@ -128,10 +128,20 @@
             0,
             0,
             0});
+            this.maximalIterationsEntryField.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.maximalIterationsEntryField.Name = "maximalIterationsEntryField";
             this.maximalIterationsEntryField.Size = new System.Drawing.Size(55, 23);
             this.maximalIterationsEntryField.TabIndex = 13;
             this.maximalIterationsEntryField.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.maximalIterationsEntryField.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.maximalIterationsEntryField.ValueChanged += new System.EventHandler(this.NumericUpDown_ValueChanged);
             // 
             // maximalIterationsLabel
@@ -148,10 +158,20 @@
             // tournamentSizeEntryField
             // 
             this.tournamentSizeEntryField.Location = new System.Drawing.Point(170, 177);
+            this.tournamentSizeEntryField.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.tournamentSizeEntryField.Name = "tournamentSizeEntryField";
             this.tournamentSizeEntryField.Size = new System.Drawing.Size(47, 23);
             this.tournamentSizeEntryField.TabIndex = 11;
             this.tournamentSizeEntryField.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tournamentSizeEntryField.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.tournamentSizeEntryField.ValueChanged += new System.EventHandler(this.NumericUpDown_ValueChanged);
             // 
             // tournamentSizeLabel
@@ -248,10 +268,25 @@
             // populationCapacityEntryField
             // 
             this.populationCapacityEntryField.Location = new System.Drawing.Point(170, 27);
+            this.populationCapacityEntryField.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.populationCapacityEntryField.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.populationCapacityEntryField.Name = "populationCapacityEntryField";
             this.populationCapacityEntryField.Size = new System.Drawing.Size(47, 23);
             this.populationCapacityEntryField.TabIndex = 1;
             this.populationCapacityEntryField.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.populationCapacityEntryField.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.populationCapacityEntryField.ValueChanged += new System.EventHandler(this.NumericUpDown_ValueChanged);
             // 
             // populationCapacityLabel

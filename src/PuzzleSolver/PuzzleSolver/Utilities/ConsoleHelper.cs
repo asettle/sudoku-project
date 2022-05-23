@@ -24,13 +24,13 @@ namespace PuzzleSolver.Utilities
                     var hasRowError = chromosome.HasError(row, s);
                     var hasColumnError = chromosome.HasError(column, r);
                     var hasSubGridError = chromosome.HasError(subGrid, s);
-                    if (hasRowError || hasColumnError || hasSubGridError)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                    }
-                    else if (currentGene.IsOriginallySet)
+                    if (currentGene.IsOriginallySet)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    else if (hasRowError || hasColumnError || hasSubGridError)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                     }
                     else
                     {

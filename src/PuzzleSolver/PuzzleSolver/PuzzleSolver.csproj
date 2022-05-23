@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="Operators\CrossoverOperator.cs" />
     <Compile Include="Operators\ElitismOperator.cs" />
+    <Compile Include="Operators\MutationOperator.cs" />
     <Compile Include="Operators\TournamentOperator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

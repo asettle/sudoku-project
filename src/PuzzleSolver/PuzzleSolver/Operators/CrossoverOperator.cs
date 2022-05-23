@@ -10,7 +10,7 @@ namespace PuzzleSolver.Operators
         internal (Chromosome, Chromosome) Apply(Chromosome parent1, Chromosome parent2)
         {
             var rnd = new Random();
-            if (rnd.NextDouble() <= decimal.ToDouble(SettingsHelper.CrossoverProbability))
+            if (rnd.NextDouble() > decimal.ToDouble(SettingsHelper.CrossoverProbability))
             {
                 return (parent1, parent2);
             }

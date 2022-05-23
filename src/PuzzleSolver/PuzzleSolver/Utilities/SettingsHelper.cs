@@ -6,7 +6,7 @@ namespace PuzzleSolver.Utilities
     {
         internal static int PopulationCapacity { get; set; }
         internal static decimal ElitismQuotient { get; set; }
-        internal static double MutationProbability { get; set; }
+        internal static decimal MutationProbability { get; set; }
         internal static double DiversityQuotient { get; set; }
         internal static decimal CrossoverProbability { get; set; }
         internal static int TournamentSize { get; set; }

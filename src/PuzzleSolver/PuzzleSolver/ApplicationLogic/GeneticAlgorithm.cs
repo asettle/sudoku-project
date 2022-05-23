@@ -11,13 +11,15 @@ namespace PuzzleSolver.ApplicationLogic
         private readonly ElitismOperator _elitismOperator;
         private readonly TournamentOperator _tournamentOperator;
         private readonly CrossoverOperator _crossoverOperator;
+        private readonly MutationOperator _mutationOperator;
 
-        public GeneticAlgorithm(int populationCapacity, decimal elitismQuotient, double mutationProbability, 
+        public GeneticAlgorithm(int populationCapacity, decimal elitismQuotient, decimal mutationProbability, 
             double diversityQuotient, decimal crossoverProbability, int tournamentSize, int maxIterations)
         {
             _elitismOperator = new ElitismOperator();
             _tournamentOperator = new TournamentOperator();
             _crossoverOperator = new CrossoverOperator();
+            _mutationOperator = new MutationOperator();
             SettingsHelper.PopulationCapacity = populationCapacity;
             SettingsHelper.ElitismQuotient = elitismQuotient;
             SettingsHelper.MutationProbability = mutationProbability;
@@ -55,6 +57,13 @@ namespace PuzzleSolver.ApplicationLogic
                 {
                     (var parent1, var parent2) = _tournamentOperator.Apply(population);
                     (var child1, var child2) = _crossoverOperator.Apply(parent1, parent2);
+                    _mutationOperator.Apply(child1);
+                    _mutationOperator.Apply(child2);
+                    population.Chromosomes.Add(child1);
+                    if (population.Chromosomes.Count < SettingsHelper.PopulationCapacity)
+                    {
+                        population.Chromosomes.Add(child2);
+                    }
                 }
                 generationSequenceNo++;
             }
