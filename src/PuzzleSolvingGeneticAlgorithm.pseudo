@@ -29,23 +29,29 @@ for (set i = 1; i <= POPULATION_CAPACITY_SET; i++) do
 end
 
 // 6. Solution Search Routine
-if (getBestChromosome(population).Fitness == 0) do
-    return
-end
-set currentGeneration = population
-set nextGeneration = []
+set solution = []
+set generationSequenceNumber = 1
+set globalBestChromosome = []
 while (not terminationCriteria) do
-    applyEliteOperator(currentGeneration, nextGeneration)
-    applyDiversityOperator(nextGeneration)
-    while (nextGeneration.Size < currentGeneration.Size) do
+    set currentBestChromosome = getFittestChromosome(population)
+    if (globalBestChromosome.Fitness < currentBestChromosome) {
+        globalBestChromosome = currentBestChromosome
+    }
+    applyElitismOperator(population) // after this step the population contains only the n fittest chromosomes
+    applyDiversityOperator(population)
+    while (population.Size < POPULATION_CAPACITY) do
         [parent1, parent2] = doTournament(currentGeneration)
         [child1, child2] = applyCrossoverOperator(parent1, parent2)
         applyMutationOperator(child1)
         applyMutationOperator(child2)
-        nextGeneration.Add(child1)
-        nextGeneration.Add(child2)
+        population.Add(child1)
+        population.Add(child2)
     end
-    currentGeneration = nextGeneration
-    nextGeneration = []
+    globalBestChromosome++
+end
+if (globalBestChromosome.Fitness == 0) do 
+    solution = globalBestChromosome
 end
 
+// 7. Output Mapping
+mapToCharacters(solution)
