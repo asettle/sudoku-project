@@ -63,6 +63,7 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operators\CrossoverOperator.cs" />
     <Compile Include="Operators\ElitismOperator.cs" />
     <Compile Include="Operators\TournamentOperator.cs" />
     <Compile Include="Program.cs" />

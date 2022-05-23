@@ -14,7 +14,7 @@ namespace PuzzleSolver
         internal decimal _elitismQuotient;
         internal double _mutationProbability;
         internal double _diversityQuotient;
-        internal double _crossoverProbability;
+        internal decimal _crossoverProbability;
         internal int _tournamentSize;
         internal int _maxIterations;
         internal int _originallySetPositions;
@@ -123,6 +123,7 @@ namespace PuzzleSolver
                 _maxIterations = Convert.ToInt32(maximalIterationsEntryField.Value);
                 _elitismQuotient = elitismQuotientEntryField.Value / 100;
                 _tournamentSize = Convert.ToInt32(tournamentSizeEntryField.Value);
+                _crossoverProbability = crossoverProbabilityEntryField.Value / 100;
                 Console.Clear();
                 backgroundWorker.RunWorkerAsync();
             }
@@ -130,7 +131,7 @@ namespace PuzzleSolver
 
         private void BackgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            var geneticAlgorithm = new GeneticAlgorithm(_populationCapacity, _elitismQuotient, 0, 0, 0, _tournamentSize, _maxIterations);
+            var geneticAlgorithm = new GeneticAlgorithm(_populationCapacity, _elitismQuotient, 0, 0, _crossoverProbability, _tournamentSize, _maxIterations);
             _solution = geneticAlgorithm.Solve(PuzzleEntryFieldValues);
         }
 

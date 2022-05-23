@@ -10,12 +10,14 @@ namespace PuzzleSolver.ApplicationLogic
     {
         private readonly ElitismOperator _elitismOperator;
         private readonly TournamentOperator _tournamentOperator;
+        private readonly CrossoverOperator _crossoverOperator;
 
         public GeneticAlgorithm(int populationCapacity, decimal elitismQuotient, double mutationProbability, 
-            double diversityQuotient, double crossoverProbability, int tournamentSize, int maxIterations)
+            double diversityQuotient, decimal crossoverProbability, int tournamentSize, int maxIterations)
         {
             _elitismOperator = new ElitismOperator();
             _tournamentOperator = new TournamentOperator();
+            _crossoverOperator = new CrossoverOperator();
             SettingsHelper.PopulationCapacity = populationCapacity;
             SettingsHelper.ElitismQuotient = elitismQuotient;
             SettingsHelper.MutationProbability = mutationProbability;
@@ -34,19 +36,25 @@ namespace PuzzleSolver.ApplicationLogic
             var initialChromosome = new Chromosome(initialGenes);
             var population = new Population(initialChromosome);
             var generationSequenceNo = 1;
-            Chromosome bestChromosome = new Chromosome(Enumerable.Repeat(new Gene(0), 16).ToList());
-            while (bestChromosome.Fitness < 0 && generationSequenceNo < SettingsHelper.MaxIterations)
+            Chromosome globalBestChromosome = new Chromosome(Enumerable.Repeat(new Gene(0), 16).ToList());
+            while (generationSequenceNo < SettingsHelper.MaxIterations)
             {
-                bestChromosome = population.GetFittestChromosome();
-                if (bestChromosome.Fitness == 0)
+                var currentBestChromosome = population.GetFittestChromosome();
+                if (currentBestChromosome.Fitness > globalBestChromosome.Fitness)
                 {
-                    ConsoleHelper.OutputStatus(generationSequenceNo, bestChromosome, mapping);
-                    bestChromosome.Genes.Select(r => r.Value).ToList().ForEach(r => solution.Add(r));
+                    globalBestChromosome = currentBestChromosome;
+                    ConsoleHelper.OutputStatus(generationSequenceNo, globalBestChromosome, mapping);
+                    if (globalBestChromosome.Fitness == 0)
+                    {
+                        globalBestChromosome.Genes.Select(r => r.Value).ToList().ForEach(r => solution.Add(r));
+                        break;
+                    }
                 }
                 _elitismOperator.Apply(population);
                 while (population.Chromosomes.Count < SettingsHelper.PopulationCapacity)
                 {
                     (var parent1, var parent2) = _tournamentOperator.Apply(population);
+                    (var child1, var child2) = _crossoverOperator.Apply(parent1, parent2);
                 }
                 generationSequenceNo++;
             }
